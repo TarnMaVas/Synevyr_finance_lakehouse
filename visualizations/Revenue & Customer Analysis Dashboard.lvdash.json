@@ -1,0 +1,465 @@
+{
+  "datasets": [
+    {
+      "name": "top_customers",
+      "displayName": "Top 10 Customers by Net Revenue",
+      "config": {
+        "version": "1.1",
+        "source": "SELECT\n  c_name AS customer_name,\n  total_net_revenue,\n  (SELECT SUM(total_net_revenue) FROM workspace.default_sofiia.finance_gold_customer_revenue) AS grand_total_revenue\nFROM workspace.default_sofiia.finance_gold_customer_revenue ORDER BY total_net_revenue DESC LIMIT 10",
+        "dimensions": [
+          {
+            "name": "customer_name",
+            "expr": "customer_name",
+            "displayName": "Customer Name"
+          },
+          {
+            "name": "grand_total_revenue",
+            "expr": "grand_total_revenue"
+          }
+        ],
+        "measures": [
+          {
+            "name": "net_revenue",
+            "expr": "SUM(total_net_revenue)",
+            "displayName": "Net Revenue",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "revenue_share",
+            "expr": "MEASURE(net_revenue) / ANY_VALUE(grand_total_revenue)",
+            "displayName": "Revenue Share",
+            "format": {
+              "type": "percentage",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 4.0
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "revenue_1997",
+      "displayName": "1997 Revenue Analysis Three Methods",
+      "config": {
+        "version": "1.1",
+        "source": "SELECT\n  'Gross Extended Price' AS metric_name,\n  gross_revenue AS revenue_value\nFROM workspace.default_sofiia.finance_gold_yearly_revenue WHERE year = 1997 UNION ALL SELECT\n  'Net of Discount' AS metric_name,\n  net_revenue_discount AS revenue_value\nFROM workspace.default_sofiia.finance_gold_yearly_revenue WHERE year = 1997 UNION ALL SELECT\n  'Net of Discount & Tax' AS metric_name,\n  net_revenue_discount_tax AS revenue_value\nFROM workspace.default_sofiia.finance_gold_yearly_revenue WHERE year = 1997",
+        "dimensions": [
+          {
+            "name": "metric_name",
+            "expr": "metric_name",
+            "displayName": "Revenue Metric"
+          }
+        ],
+        "measures": [
+          {
+            "name": "revenue_value",
+            "expr": "SUM(revenue_value)",
+            "displayName": "Revenue",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "market_segment_trends",
+      "displayName": "Market Segment Avg Order Value Trends",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.default_sofiia.finance_gold_segment_yearly_order_value",
+        "dimensions": [
+          {
+            "name": "year",
+            "expr": "year",
+            "displayName": "Year"
+          },
+          {
+            "name": "c_mktsegment",
+            "expr": "c_mktsegment",
+            "displayName": "Market Segment"
+          }
+        ],
+        "measures": [
+          {
+            "name": "avg_order_value",
+            "expr": "AVG(avg_order_value)",
+            "displayName": "Avg Order Value",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "top_suppliers",
+      "displayName": "Top 5 Suppliers by Revenue",
+      "config": {
+        "version": "1.1",
+        "source": "SELECT\n  s_name AS supplier_name,\n  supplier_net_revenue,\n  avg_discount\nFROM workspace.default_sofiia.finance_gold_supplier_performance ORDER BY supplier_net_revenue DESC LIMIT 5",
+        "dimensions": [
+          {
+            "name": "supplier_name",
+            "expr": "supplier_name",
+            "displayName": "Supplier Name"
+          }
+        ],
+        "measures": [
+          {
+            "name": "total_revenue",
+            "expr": "SUM(supplier_net_revenue)",
+            "displayName": "Total Revenue",
+            "format": {
+              "type": "currency",
+              "currencyCode": "USD",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          },
+          {
+            "name": "avg_discount",
+            "expr": "AVG(avg_discount)",
+            "displayName": "Avg Discount",
+            "format": {
+              "type": "percentage",
+              "decimalPlaces": {
+                "type": "exact",
+                "places": 2.0
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "97d4b9be",
+      "displayName": "Q/A",
+      "layout": [
+        {
+          "widget": {
+            "name": "title_header",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Revenue & Customer Analysis Dashboard\n",
+                "This dashboard answers four key business questions: top customers by net revenue, 1997 revenue comparison, market segment order value trends, and top suppliers by revenue."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "top_customers_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "top_customers",
+                  "fields": [
+                    {
+                      "name": "customer_name",
+                      "expression": "`customer_name`"
+                    },
+                    {
+                      "name": "measure(net_revenue)",
+                      "expression": "MEASURE(`net_revenue`)"
+                    },
+                    {
+                      "name": "measure(revenue_share)",
+                      "expression": "MEASURE(`revenue_share`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Top 10 Customers by Net Revenue"
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "customer_name"
+                  },
+                  {
+                    "fieldName": "measure(net_revenue)"
+                  },
+                  {
+                    "fieldName": "measure(revenue_share)"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "revenue_1997_bar",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "revenue_1997",
+                  "fields": [
+                    {
+                      "name": "metric_name",
+                      "expression": "`metric_name`"
+                    },
+                    {
+                      "name": "measure(revenue_value)",
+                      "expression": "MEASURE(`revenue_value`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "1997 Revenue: Three Calculation Methods"
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "metric_name",
+                  "displayName": "metric_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(revenue_value)",
+                  "displayName": "revenue_value",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "metric_name",
+                  "displayName": "metric_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 1,
+            "width": 6,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "revenue_1997_recommendation",
+            "multilineTextboxSpec": {
+              "lines": [
+                "### Which metric should the business report?\n",
+                "The business should report **Net of Discount** as its revenue figure. This reflects the actual revenue the company expects to receive after customer discounts are applied.\n",
+                "\n",
+                "* **Gross Extended Price** overstates revenue by ignoring committed discounts.\n",
+                "* **Net of Discount & Tax** includes tax collected on behalf of tax authorities — tax is not company revenue.\n",
+                "* **Net of Discount** gives the most accurate picture of earned revenue."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "market_segment_line",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "market_segment_trends",
+                  "fields": [
+                    {
+                      "name": "c_mktsegment",
+                      "expression": "`c_mktsegment`"
+                    },
+                    {
+                      "name": "year",
+                      "expression": "`year`"
+                    },
+                    {
+                      "name": "measure(avg_order_value)",
+                      "expression": "MEASURE(`avg_order_value`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Average Order Value by Market Segment (Year-over-Year)",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "year",
+                  "displayName": "Year",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(avg_order_value)",
+                  "displayName": "Avg Order Value",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "c_mktsegment",
+                  "displayName": "Market Segment",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "top_suppliers_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "top_suppliers",
+                  "fields": [
+                    {
+                      "name": "supplier_name",
+                      "expression": "`supplier_name`"
+                    },
+                    {
+                      "name": "measure(total_revenue)",
+                      "expression": "MEASURE(`total_revenue`)"
+                    },
+                    {
+                      "name": "measure(avg_discount)",
+                      "expression": "MEASURE(`avg_discount`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Top 5 Suppliers by Revenue",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "supplier_name"
+                  },
+                  {
+                    "fieldName": "measure(total_revenue)"
+                  },
+                  {
+                    "fieldName": "measure(avg_discount)"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 14,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}

@@ -1,5 +1,5 @@
 CATALOG = "workspace"
-SCHEMA = "default_sofiia"
+SCHEMA = "default"
 
 SOURCE_SCHEMA = "samples.tpch"
 
