@@ -4,7 +4,7 @@ A Databricks medallion Lakehouse pipeline built on the TPC-H sample dataset, imp
 
 ## Presentation link
 
-You can view the presentation [here](https://docs.google.com/presentation/d/1mhIGBZ4mKGVGLUsghrXfuTaDm5uKQycQrOGtBCqPIjA/edit?usp=sharing) ander .ucu.edu.ua account.
+You can view the presentation [here](https://canva.link/t69eyb92a2o3z1r) ander .ucu.edu.ua account.
 
 ## Data Source
 
