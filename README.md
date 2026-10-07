@@ -119,4 +119,9 @@ Implements TPC-H order-total reconciliation against Silver tables, aggregates mo
 
 ## Team
 
-Synevyr team — Group Assignment 1, Finance customer profile.
+Synevyr team:
+
+- Tarnavskyi Maksym-Vasyl: Source profiling, Bronze Layer, Silver Layer
+- Stetsuk Kostiantyn: Monitoring
+- Kornetskyi Yaroslav: Vizualizations
+- Sampara Sofiia: Gold Layer, Questions
