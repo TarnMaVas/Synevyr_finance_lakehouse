@@ -5,7 +5,7 @@
       "displayName": "Top 10 Customers by Net Revenue",
       "config": {
         "version": "1.1",
-        "source": "SELECT\n  c_name AS customer_name,\n  total_net_revenue,\n  (SELECT SUM(total_net_revenue) FROM workspace.default_sofiia.finance_gold_customer_revenue) AS grand_total_revenue\nFROM workspace.default_sofiia.finance_gold_customer_revenue ORDER BY total_net_revenue DESC LIMIT 10",
+        "source": "SELECT\n  c_name AS customer_name,\n  total_net_revenue,\n  (SELECT SUM(total_net_revenue) FROM workspace.default.finance_gold_customer_revenue) AS grand_total_revenue\nFROM workspace.default.finance_gold_customer_revenue ORDER BY total_net_revenue DESC LIMIT 10",
         "dimensions": [
           {
             "name": "customer_name",
@@ -51,7 +51,7 @@
       "displayName": "1997 Revenue Analysis Three Methods",
       "config": {
         "version": "1.1",
-        "source": "SELECT\n  'Gross Extended Price' AS metric_name,\n  gross_revenue AS revenue_value\nFROM workspace.default_sofiia.finance_gold_yearly_revenue WHERE year = 1997 UNION ALL SELECT\n  'Net of Discount' AS metric_name,\n  net_revenue_discount AS revenue_value\nFROM workspace.default_sofiia.finance_gold_yearly_revenue WHERE year = 1997 UNION ALL SELECT\n  'Net of Discount & Tax' AS metric_name,\n  net_revenue_discount_tax AS revenue_value\nFROM workspace.default_sofiia.finance_gold_yearly_revenue WHERE year = 1997",
+        "source": "SELECT\n  'Gross Extended Price' AS metric_name,\n  gross_revenue AS revenue_value\nFROM workspace.default.finance_gold_yearly_revenue WHERE year = 1997 UNION ALL SELECT\n  'Net of Discount' AS metric_name,\n  net_revenue_discount AS revenue_value\nFROM workspace.default.finance_gold_yearly_revenue WHERE year = 1997 UNION ALL SELECT\n  'Net of Discount & Tax' AS metric_name,\n  net_revenue_discount_tax AS revenue_value\nFROM workspace.default.finance_gold_yearly_revenue WHERE year = 1997",
         "dimensions": [
           {
             "name": "metric_name",
@@ -81,7 +81,7 @@
       "displayName": "Market Segment Avg Order Value Trends",
       "config": {
         "version": "1.1",
-        "source": "workspace.default_sofiia.finance_gold_segment_yearly_order_value",
+        "source": "workspace.default.finance_gold_segment_yearly_order_value",
         "dimensions": [
           {
             "name": "year",
@@ -116,7 +116,7 @@
       "displayName": "Top 5 Suppliers by Revenue",
       "config": {
         "version": "1.1",
-        "source": "SELECT\n  s_name AS supplier_name,\n  supplier_net_revenue,\n  avg_discount\nFROM workspace.default_sofiia.finance_gold_supplier_performance ORDER BY supplier_net_revenue DESC LIMIT 5",
+        "source": "SELECT\n  s_name AS supplier_name,\n  supplier_net_revenue,\n  avg_discount\nFROM workspace.default.finance_gold_supplier_performance ORDER BY supplier_net_revenue DESC LIMIT 5",
         "dimensions": [
           {
             "name": "supplier_name",
@@ -173,7 +173,7 @@
             "x": 0,
             "y": 0,
             "width": 12,
-            "height": 1
+            "height": 2
           }
         },
         {
@@ -229,7 +229,7 @@
           },
           "position": {
             "x": 0,
-            "y": 1,
+            "y": 2,
             "width": 6,
             "height": 7
           }
@@ -293,7 +293,7 @@
           },
           "position": {
             "x": 6,
-            "y": 1,
+            "y": 2,
             "width": 6,
             "height": 7
           }
@@ -314,7 +314,7 @@
           },
           "position": {
             "x": 0,
-            "y": 14,
+            "y": 15,
             "width": 6,
             "height": 6
           }
@@ -385,7 +385,7 @@
           },
           "position": {
             "x": 0,
-            "y": 8,
+            "y": 9,
             "width": 12,
             "height": 6
           }
@@ -446,7 +446,7 @@
           },
           "position": {
             "x": 6,
-            "y": 14,
+            "y": 15,
             "width": 6,
             "height": 6
           }
