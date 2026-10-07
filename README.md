@@ -2,6 +2,10 @@
 
 A Databricks medallion Lakehouse pipeline built on the TPC-H sample dataset, implementing Bronze → Silver → Gold layers with data quality validation, cross-layer reconciliation, monitoring, and an AI/BI dashboard for Finance business analytics.
 
+## Presentation link
+
+You can view the presentation [here](https://docs.google.com/presentation/d/1mhIGBZ4mKGVGLUsghrXfuTaDm5uKQycQrOGtBCqPIjA/edit?usp=sharing) ander .ucu.edu.ua account.
+
 ## Data Source
 
 All eight TPC-H tables from the Databricks sample dataset:
